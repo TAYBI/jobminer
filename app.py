@@ -14,7 +14,9 @@ def scrape():
     jobtitle = request.form['jobtitle']
     location = request.form['location']
     # Do something with the form data
-    # print(jobtitle, location)
+
+    settings = get_project_settings()
+    settings.set('REQUEST_FINGERPRINTER_IMPLEMENTATION', None)
     process = CrawlerProcess(get_project_settings())
     process.crawl(JobSpider, jobtitle=jobtitle, location=location)
     process.start()

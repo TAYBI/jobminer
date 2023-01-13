@@ -1,22 +1,28 @@
 import scrapy
 
+
 class JobSpider(scrapy.Spider):
     name = "job_spider"
-    start_urls = []
 
-    def start_requests(self, jobtitle=None, location=None):
-        for url in self.start_urls:
-            yield scrapy.Request(url, self.parse, meta={'jobtitle': jobtitle, 'location': location})
+    def __init__(self, jobtitle=None, location=None, *args, **kwargs):
+        super(JobSpider, self).__init__(*args, **kwargs)
+        self.jobtitle = jobtitle
+        self.location = location
+        self.start_urls = [f'https://www.flexjobs.com/search?search={jobtitle}&location={location}']
 
     def parse(self, response):
-        jobtitle = response.meta.get('jobtitle')
-        location = response.meta.get('location')
-        
-        # Use CSS or XPath selectors to extract job listings
-        job_listings = response.css('div.job-listing')
+        # Use CSS selectors to extract job listings
+        job_listings = response.css('.row .job')
         for job in job_listings:
             yield {
-                'title': job.css('h2 a::text').get(),
-                'location': job.css('div.job-location::text').get(),
-                'description': job.css('div.job-description::text').get()
+                'title': job.css('.job-title::text').get(),
+                'location': job.css('div.job-locations::text').get(),
+                'description': job.css('div.job-description').get()
             }
+
+        
+        # next_url = 'https://www.flexjobs.com' + \
+        #     response.css('a[rel="next"]').attrib['href']
+
+        # if next_url is not None:
+        #     yield response.follow(next_url, callback=self.parse)
