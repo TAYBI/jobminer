@@ -1,18 +1,21 @@
 import scrapy
-
+from scrapy.crawler import CrawlerProcess
 
 class JobSpider(scrapy.Spider):
     name = "job_spider"
 
     def __init__(self, jobtitle=None, location=None, *args, **kwargs):
         super(JobSpider, self).__init__(*args, **kwargs)
-        self.jobtitle = jobtitle
-        self.location = location
+        self.jobtitle = 'python'
+        self.location = 'remote'
         self.start_urls = [f'https://www.flexjobs.com/search?search={jobtitle}&location={location}']
+        print(self.start_requests)
 
     def parse(self, response):
+        
         # Use CSS selectors to extract job listings
         job_listings = response.css('.row .job')
+        print(job_listings)
         for job in job_listings:
             yield {
                 'title': job.css('.job-title::text').get(),
@@ -20,9 +23,17 @@ class JobSpider(scrapy.Spider):
                 'description': job.css('div.job-description').get()
             }
 
-        
-        # next_url = 'https://www.flexjobs.com' + \
-        #     response.css('a[rel="next"]').attrib['href']
+        next_url = 'https://www.flexjobs.com' + \
+            response.css('a[rel="next"]').attrib['href']
 
-        # if next_url is not None:
-        #     yield response.follow(next_url, callback=self.parse)
+        if next_url is not None:
+            # yield scrapy.Request(url= next_url)
+            yield response.follow(next_url, callback=self.parse)
+
+c = CrawlerProcess({
+    'USER_AGENT': 'Mozilla/5.0',
+    'FEED_FORMAT': 'json',
+    'FEED_URI': 'output.json',
+})
+c.crawl(JobSpider)
+c.start()
