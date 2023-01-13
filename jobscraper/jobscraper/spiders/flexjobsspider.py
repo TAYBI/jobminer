@@ -6,10 +6,9 @@ class JobSpider(scrapy.Spider):
 
     def __init__(self, jobtitle=None, location=None, *args, **kwargs):
         super(JobSpider, self).__init__(*args, **kwargs)
-        self.jobtitle = 'python'
-        self.location = 'remote'
+        self.jobtitle = jobtitle
+        self.location = location
         self.start_urls = [f'https://www.flexjobs.com/search?search={jobtitle}&location={location}']
-        print(self.start_requests)
 
     def parse(self, response):
         
@@ -30,10 +29,10 @@ class JobSpider(scrapy.Spider):
             # yield scrapy.Request(url= next_url)
             yield response.follow(next_url, callback=self.parse)
 
-c = CrawlerProcess({
-    'USER_AGENT': 'Mozilla/5.0',
-    'FEED_FORMAT': 'json',
-    'FEED_URI': 'data.json',
-})
-c.crawl(JobSpider)
-c.start()
+# c = CrawlerProcess({
+#     'USER_AGENT': 'Mozilla/5.0',
+#     'FEED_FORMAT': 'json',
+#     'FEED_URI': 'data.json',
+# })
+# c.crawl(JobSpider)
+# c.start()
