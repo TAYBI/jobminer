@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
-from scrapy.utils.project import get_project_settings
-from jobscraper.jobscraper.spiders.flexjobsspider import JobSpider
-from scrapy.crawler import CrawlerProcess
+# from scrapy.utils.project import get_project_settings
+# from jobscraper.jobscraper.spiders.flexjobsspider import JobSpider
+# from scrapy.crawler import CrawlerProcess
 
 app = Flask(__name__)
 
@@ -9,7 +9,7 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@app.route('/scraper', methods=['POST'])
+@app.route('/scrape', methods=['POST'])
 def scrape():
     jobtitle = request.form['jobtitle']
     location = request.form['location']

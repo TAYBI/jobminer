@@ -2,7 +2,7 @@ import scrapy
 from scrapy.crawler import CrawlerProcess
 
 class JobSpider(scrapy.Spider):
-    name = "job_spider"
+    name = "flexjobs_spider"
 
     def __init__(self, jobtitle=None, location=None, *args, **kwargs):
         super(JobSpider, self).__init__(*args, **kwargs)
@@ -33,7 +33,7 @@ class JobSpider(scrapy.Spider):
 c = CrawlerProcess({
     'USER_AGENT': 'Mozilla/5.0',
     'FEED_FORMAT': 'json',
-    'FEED_URI': 'output.json',
+    'FEED_URI': 'data.json',
 })
 c.crawl(JobSpider)
 c.start()
