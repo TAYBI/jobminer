@@ -24,7 +24,7 @@ def flexjobs_scraper(url):
             j = {
                 'title': job.select('.job-title')[0].get_text(),
                 'location': job.select('.job-locations')[0].get_text(),
-                'description': str(job.select('.job-description')[0])
+                'description': job.select('.job-description')[0].get_text()
             }
             print(j)
             job_listings.append(j)
@@ -54,7 +54,7 @@ def scrape():
     except:
         print(len(job_listings))
 
-    render_template('jobs.html', job_listings=job_listings)
-    return 
+    
+    return render_template('jobs.html', job_listings=job_listings)
         # continue
     

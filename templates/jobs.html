@@ -10,6 +10,8 @@
 </head>
 
 <body>
+    <!-- <div class="container mx-auto"> -->
+    <br />
     <form method="POST" action="{{ url_for('scrape') }}">
         <input name="jobtitle" type="text"
             class="form-input py-3 px-4 leading-5 rounded-md transition duration-150 ease-in-out bg-white border border-gray-300 placeholder-gray-500 rounded-md focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10 sm:text-sm sm:leading-5"
@@ -19,20 +21,20 @@
             placeholder="Location">
         <button type="submit">search</button>
     </form>
-    <table>
-        <tr>
-            <th>Title</th>
-            <th>Location</th>
-            <th>Description</th>
-        </tr>
-        {% for job in job_listings %}
-        <tr>
-            <td>{{ job.title }}</td>
-            <td>{{ job.location }}</td>
-            <td>{{ job.description }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+    <br>
+
+    {% for job in job_listings %}
+    <br>
+    <a href="#"
+        class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ job.title }}</h5>
+        <p class="font-normal text-gray-700 dark:text-gray-400">{{ job.location }}</p>
+        <div class="font-normal text-gray-700 dark:text-gray-400">{{ job.description }}</div>
+    </a>
+    <!-- </div> -->
+
+    {% endfor %}
+
 </body>
 
 </html>
