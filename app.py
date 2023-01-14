@@ -1,28 +1,60 @@
-from flask import Flask, render_template, request
-# from scrapy.utils.project import get_project_settings
+from flask import Flask, render_template, request, redirect
 from jobscraper.jobscraper.spiders.flexjobsspider import JobSpider
-from scrapy.crawler import CrawlerProcess
+import bs4
+import requests
 
 app = Flask(__name__)
+job_listings = []
 
 @app.route("/")
 def index():
     return render_template('index.html')
+
+def flexjobs_scraper(url):
+    res = requests.get(url)
+    res.raise_for_status()
+    soup = bs4.BeautifulSoup(res.text, 'html.parser')
+    nextLink = soup.select('a[rel="next"]')[0].get('href')
+
+    while nextLink:
+        jobs = soup.select('.row .job')
+
+        print(len(jobs))
+        for job in jobs:
+            j = {
+                'title': job.select('.job-title')[0].get_text(),
+                'location': job.select('.job-locations')[0].get_text(),
+                'description': str(job.select('.job-description')[0])
+            }
+            print(j)
+            job_listings.append(j)
+
+        nextLink = soup.select('a[rel="next"]')[0].get('href')
+        url = 'https://flexjobs.com' + nextLink
+        flexjobs_scraper(url)
 
 @app.route('/scrape', methods=['POST'])
 def scrape():
     jobtitle = request.form['jobtitle']
     location = request.form['location']
     # Do something with the form data
-    process = CrawlerProcess({
-        'USER_AGENT': 'Mozilla/5.0',
-        'FEED_FORMAT': 'json',
-        'FEED_URI': 'data.json',
-    })
+    # process = CrawlerProcess({
+    #     'USER_AGENT': 'Mozilla/5.0',
+    #     'FEED_FORMAT': 'json',
+    #     'FEED_URI': 'data.json',
+    # })
+    
+    # process.crawl(JobSpider, jobtitle=jobtitle, location=location)
+    # process.start()
+    # redirect('index.html')
+    # except Exception as exce:
+    url = f'https://www.flexjobs.com/search?search={jobtitle}&location={location}'
     try:
-        process.crawl(JobSpider, jobtitle=jobtitle, location=location)
-        process.start()
+        flexjobs_scraper(url)
     except:
-        return f'<h1>{jobtitle} {location}<h1>'
+        print(len(job_listings))
+
+    render_template('jobs.html', job_listings=job_listings)
+    return 
         # continue
     

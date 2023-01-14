@@ -17,9 +17,9 @@ class JobSpider(scrapy.Spider):
         print(job_listings)
         for job in job_listings:
             yield {
-                'title': job.css('.job-title::text').get(),
-                'location': job.css('div.job-locations::text').get(),
-                'description': job.css('div.job-description').get()
+                    'title': job.css('.job-title::text').get(),
+                    'location': job.css('div.job-locations::text').get(),
+                    'description': job.css('div.job-description').get()
             }
 
         next_url = 'https://www.flexjobs.com' + \
