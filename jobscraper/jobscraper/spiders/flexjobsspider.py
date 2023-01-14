@@ -6,7 +6,7 @@ class JobSpider(scrapy.Spider):
 
     def __init__(self, jobtitle=None, location=None, *args, **kwargs):
         super(JobSpider, self).__init__(*args, **kwargs)
-        self.jobtitle = jobtitle
+        self.jobtitle = 'hdjd'
         self.location = location
         self.start_urls = [f'https://www.flexjobs.com/search?search={jobtitle}&location={location}']
 

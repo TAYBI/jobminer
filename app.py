@@ -13,6 +13,7 @@ def index():
 def flexjobs_scraper(url):
     res = requests.get(url)
     res.raise_for_status()
+
     soup = bs4.BeautifulSoup(res.text, 'html.parser')
     nextLink = soup.select('a[rel="next"]')[0].get('href')
 
@@ -33,6 +34,8 @@ def flexjobs_scraper(url):
         url = 'https://flexjobs.com' + nextLink
         flexjobs_scraper(url)
 
+
+
 @app.route('/scrape', methods=['POST'])
 def scrape():
     jobtitle = request.form['jobtitle']
@@ -45,7 +48,7 @@ def scrape():
     # })
     
     # process.crawl(JobSpider, jobtitle=jobtitle, location=location)
-    # process.start()
+    # # process.start()
     # redirect('index.html')
     # except Exception as exce:
     url = f'https://www.flexjobs.com/search?search={jobtitle}&location={location}'
