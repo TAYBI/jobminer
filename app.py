@@ -17,22 +17,23 @@ def flexjobs_scraper(url):
     soup = bs4.BeautifulSoup(res.text, 'html.parser')
     nextLink = soup.select('a[rel="next"]')[0].get('href')
 
-    while nextLink:
-        jobs = soup.select('.row .job')
+    # loog throug all the pages
+    # while nextLink:
+    jobs = soup.select('.row .job')
 
-        print(len(jobs))
-        for job in jobs:
-            j = {
-                'title': job.select('.job-title')[0].get_text(),
-                'location': job.select('.job-locations')[0].get_text(),
-                'description': job.select('.job-description')[0].get_text()
-            }
-            print(j)
-            job_listings.append(j)
-
-        nextLink = soup.select('a[rel="next"]')[0].get('href')
-        url = 'https://flexjobs.com' + nextLink
-        flexjobs_scraper(url)
+    print(len(jobs))
+    for job in jobs:
+        j = {
+            'title': job.select('.job-title')[0].get_text(),
+            'location': job.select('.job-locations')[0].get_text(),
+            'description': job.select('.job-description')[0].get_text()
+        }
+        print(j)
+        job_listings.append(j)
+        # next button
+        # nextLink = soup.select('a[rel="next"]')[0].get('href')
+        # url = 'https://flexjobs.com' + nextLink
+        # flexjobs_scraper(url)
 
 
 
