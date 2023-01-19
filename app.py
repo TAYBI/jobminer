@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request
 from jobscraper.jobscraper.spiders.flexjobsspider import JobSpider
 import bs4
 import requests
@@ -17,22 +17,22 @@ def flexjobs_scraper(url):
     soup = bs4.BeautifulSoup(res.text, 'html.parser')
     nextLink = soup.select('a[rel="next"]')[0].get('href')
 
-    # while nextLink:
-    jobs = soup.select('.row .job')
+    while nextLink:
+        jobs = soup.select('.row .job')
 
-    print(len(jobs))
-    for job in jobs:
-        j = {
-            'title': job.select('.job-title')[0].get_text(),
-            'location': job.select('.job-locations')[0].get_text(),
-            'description': job.select('.job-description')[0].get_text()
-        }
-        print(j)
-        job_listings.append(j)
+        print(len(jobs))
+        for job in jobs:
+            j = {
+                'title': job.select('.job-title')[0].get_text(),
+                'location': job.select('.job-locations')[0].get_text(),
+                'description': job.select('.job-description')[0].get_text()
+            }
+            print(j)
+            job_listings.append(j)
 
-        # nextLink = soup.select('a[rel="next"]')[0].get('href')
-        # url = 'https://flexjobs.com' + nextLink
-        # flexjobs_scraper(url)
+        nextLink = soup.select('a[rel="next"]')[0].get('href')
+        url = 'https://flexjobs.com' + nextLink
+        flexjobs_scraper(url)
 
 
 
@@ -40,18 +40,8 @@ def flexjobs_scraper(url):
 def scrape():
     jobtitle = request.form['jobtitle']
     location = request.form['location']
-    # Do something with the form data
-    # process = CrawlerProcess({
-    #     'USER_AGENT': 'Mozilla/5.0',
-    #     'FEED_FORMAT': 'json',
-    #     'FEED_URI': 'data.json',
-    # })
-    
-    # process.crawl(JobSpider, jobtitle=jobtitle, location=location)
-    # # process.start()
-    # redirect('index.html')
-    # except Exception as exce:
-    url = f'https://www.flexjobs.com/search?search={jobtitle}&location={location}'
+
+    url = f'https://www.flexjobs.com/search?search={jobtitle}&location={location}&srt=date'
     try:
         flexjobs_scraper(url)
     except:
@@ -59,5 +49,4 @@ def scrape():
 
     
     return render_template('jobs.html', job_listings=job_listings)
-        # continue
     
