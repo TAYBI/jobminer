@@ -17,9 +17,13 @@ def flexjobs_scraper(url):
     soup = bs4.BeautifulSoup(res.text, 'html.parser')
     nextLink = soup.select('a[rel="next"]')[0].get('href')
 
-    # loog throug all the pages
+    # loop throug all the pages
     # while nextLink:
     jobs = soup.select('.row .job')
+    pagesnav = soup.select('.page-link')
+    lastnumber = int(pagesnav[len(pagesnav) - 2].get_text())
+    firstnumber = int(pagesnav[len(pagesnav) + 1 - len(pagesnav)].get_text())
+
 
     print(len(jobs))
     for job in jobs:

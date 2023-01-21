@@ -1,6 +1,7 @@
 import bs4
 import requests
 import json
+from urllib.parse import urljoin
 
 jobtitle = 'python'
 location = 'remote'
@@ -17,10 +18,12 @@ def flexjobs_scraper(url):
 
     # while nextLink:
     pagesnav = soup.select('.page-link')
-
+    # firstnumber = int(pagesnav[len(pagesnav) + 1 - len(pagesnav)].get_text())
+    # print(pagesnav)
     for element in pagesnav:
-        text = element.select('.page-link')[0].get_text()
-        print(text)
+        relative_url = element.get('href')
+        full_url = urljoin('https://www.flexjobs.com', relative_url)
+        print(full_url)
     # Do something with the text and link
 
    
