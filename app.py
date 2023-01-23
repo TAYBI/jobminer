@@ -5,6 +5,7 @@ import requests
 
 app = Flask(__name__)
 job_listings = []
+paginationItems = []
 
 @app.route("/")
 def index():
@@ -17,13 +18,7 @@ def flexjobs_scraper(url):
     soup = bs4.BeautifulSoup(res.text, 'html.parser')
     nextLink = soup.select('a[rel="next"]')[0].get('href')
 
-    # loop throug all the pages
-    # while nextLink:
     jobs = soup.select('.row .job')
-    pagesnav = soup.select('.page-link')
-    lastnumber = int(pagesnav[len(pagesnav) - 2].get_text())
-    firstnumber = int(pagesnav[len(pagesnav) + 1 - len(pagesnav)].get_text())
-
 
     print(len(jobs))
     for job in jobs:
@@ -39,7 +34,21 @@ def flexjobs_scraper(url):
         # url = 'https://flexjobs.com' + nextLink
         # flexjobs_scraper(url)
 
+def pagination(jobtitle, location):
+    res = requests.get(f'https://www.flexjobs.com/search?search={jobtitle}&location={location}&srt=date')
+    res.raise_for_status()
+    soup = bs4.BeautifulSoup(res.text, 'html.parser')
+    pagesnav = soup.select('.page-link')
 
+    lastnumber = int(pagesnav[len(pagesnav) - 2].get_text())
+    firstnumber = int(pagesnav[len(pagesnav) + 1 - len(pagesnav)].get_text())
+
+    for i in range(firstnumber, lastnumber + 1):
+        full_url = f'https://www.flexjobs.com/search?search={jobtitle}&location={location}&srt=date&page={i}'
+        paginationItems.append({
+            'pageNumber': i,
+            'href': full_url
+        })
 
 @app.route('/scrape', methods=['POST'])
 def scrape():
