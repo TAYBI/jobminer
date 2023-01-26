@@ -27,4 +27,5 @@ def pagination(jobtitle, location):
         })
 
 pagination('python','remote')
-print(paginationItems)
+for i in paginationItems:
+    print(i['href'])

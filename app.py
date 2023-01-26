@@ -26,7 +26,7 @@ def flexjobs_scraper(url):
             'title': job.select('.job-title')[0].get_text(),
             'location': job.select('.job-locations')[0].get_text(),
             'description': job.select('.job-description')[0].get_text()
-        }
+        }  
         print(j)
         job_listings.append(j)
         # next button
@@ -54,13 +54,14 @@ def pagination(jobtitle, location):
 def scrape():
     jobtitle = request.form['jobtitle']
     location = request.form['location']
-
+    # https://www.flexjobs.com/search?search=data+analyst&location=remote
     url = f'https://www.flexjobs.com/search?search={jobtitle}&location={location}&srt=date'
     try:
         flexjobs_scraper(url)
+        pagination(jobtitle, location)
     except:
         print(len(job_listings))
 
     
-    return render_template('jobs.html', job_listings=job_listings)
+    return render_template('jobs.html', job_listings=job_listings, paginationItems=paginationItems)
     
