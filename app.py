@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
-from jobscraper.jobscraper.spiders.flexjobsspider import JobSpider
 import bs4
 import requests
+import json
 
 app = Flask(__name__)
 job_listings = []
@@ -29,11 +29,14 @@ def flexjobs_scraper(url):
         }  
         print(j)
         job_listings.append(j)
+    with open('data.json', 'w') as f:
+        json.dump(job_listings, f)
         # next button
         # nextLink = soup.select('a[rel="next"]')[0].get('href')
         # url = 'https://flexjobs.com' + nextLink
         # flexjobs_scraper(url)
 
+@app.route('/pagination')
 def pagination(jobtitle, location):
     res = requests.get(f'https://www.flexjobs.com/search?search={jobtitle}&location={location}&srt=date')
     res.raise_for_status()
@@ -46,7 +49,7 @@ def pagination(jobtitle, location):
     for i in range(firstnumber, lastnumber + 1):
         full_url = f'https://www.flexjobs.com/search?search={jobtitle}&location={location}&srt=date&page={i}'
         paginationItems.append({
-            'pageNumber': i,
+            'pageNumber':int(i),
             'href': full_url
         })
 
@@ -54,14 +57,14 @@ def pagination(jobtitle, location):
 def scrape():
     jobtitle = request.form['jobtitle']
     location = request.form['location']
-    # https://www.flexjobs.com/search?search=data+analyst&location=remote
+
     url = f'https://www.flexjobs.com/search?search={jobtitle}&location={location}&srt=date'
     try:
         flexjobs_scraper(url)
-        pagination(jobtitle, location)
+        # pagination(jobtitle, location)
     except:
         print(len(job_listings))
 
     
-    return render_template('jobs.html', job_listings=job_listings, paginationItems=paginationItems)
+    return render_template('jobs.html', job_listings=job_listings, paginationItems=paginationItems, currentPage=3)
     

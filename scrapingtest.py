@@ -22,10 +22,10 @@ def pagination(jobtitle, location):
     for i in range(firstnumber, lastnumber + 1):
         full_url = f'https://www.flexjobs.com/search?search={jobtitle}&location={location}&srt=date&page={i}'
         paginationItems.append({
-            'pageNumber': i,
+            'pageNumber': int(i),
             'href': full_url
         })
 
 pagination('python','remote')
 for i in paginationItems:
-    print(i['href'])
+    print(type(i['pageNumber']), i['pageNumber'], i['href'])
