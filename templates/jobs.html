@@ -7,23 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JobMiner</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .pagination-link.selected {
-            background-color: indigo-50;
-        }
-    </style>
-</head>
-<script>
-    const paginationLinks = document.querySelectorAll('.pagination-link');
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    paginationLinks.forEach(link => {
-        link.addEventListener('click', e => {
-            e.preventDefault();
-            paginationLinks.forEach(link => link.classList.remove('selected'));
-            link.classList.add('selected');
-        });
-    });
-</script>
+</head>
 
 <body class="bg-gray-50  ">
     <div class="container flex flex-col h-screen justify-between mx-auto ">
@@ -71,15 +57,15 @@
                             </svg>
                         </a>
                         {% for item in paginationItems %}
-                        <form action="POST">
-                            <button>
-                                <a href="{{ item.href }}" class="relative inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20 
+                        <!-- <form action="POST"> -->
+                        <!-- <button> -->
+                        <a href="{{item.href}}" class="pagination-button relative inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20 
                                     {% if item.pageNumber == currentPage %}
                                             bg-indigo-50 text-black
                                     {% endif %}">{{
-                                    item.pageNumber }}</a>
-                            </button>
-                        </form>
+                            item.pageNumber }}</a>
+                        <!-- </button> -->
+                        <!-- </form> -->
                         {% endfor %}
                         <a href="#"
                             class="relative inline-flex items-center rounded-r-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20">
@@ -98,10 +84,10 @@
 
 
 
-        <div class="mb-auto flex">
-            <div class="result w-3/3 ">
+        <div class="mb-auto flex ">
+            <div class="results mx-auto">
                 {% for job in job_listings %}
-                <a href="#" class="bg-white mb-4 rounded-lg p-6 block hover:shadow-sm">
+                <a href="#" class="bg-white max-w-[740px] mb-4 rounded-lg p-6 block hover:shadow-sm">
                     <h3 class="text-xl font-medium">{{ job.title }}</h3>
                     <h4 class="text-base font-medium text-gray-600">{{ job.location }}</h4>
                     <p class="text-sm text-gray-600">{{ job.description }}</p>
@@ -120,5 +106,22 @@
 
     </div>
 </body>
+
+<!-- <script src="./js/script.js"></script> -->
+<script>
+    console.log('loaded');
+    const paginationLinks = document.querySelectorAll('.pagination-button');
+    console.log(paginationLinks);
+
+    paginationLinks.forEach(element => {
+        element.addEventListener('click', e => {
+            e.preventDefault();
+            const currentPage = element.textContent
+            const href = element.href;
+
+            console.log(currentPage, href);
+        });
+    });
+</script>
 
 </html>
