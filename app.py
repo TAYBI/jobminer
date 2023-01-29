@@ -64,6 +64,9 @@ def changepage():
     currentPage = request.form['currentPage']
     href = request.form['href']
 
+    print('*' * 30)
+    print(currentPage, href)
+    print('*' * 30)
     flexjobs_scraper(href)
     return render_template('jobs.html', job_listings=job_listings, paginationItems=paginationItems, currentPage=currentPage)
     # Do something with the page number, like querying a database for data for that page
