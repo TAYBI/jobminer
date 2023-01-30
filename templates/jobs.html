@@ -57,15 +57,15 @@
                             </svg>
                         </a>
                         {% for item in paginationItems %}
-                        <!-- <form action="POST" action>
-                            <button> -->
-                        <a href="{{item.href}}" class="pagination-button relative inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20 
+                        <form method="POST" action="{{ url_for('changepage') }}">
+                            <button type="submit">
+                                <a href="{{item.href}}" class="pagination-button relative inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20 
                                     {% if item.pageNumber == currentPage %}
                                             bg-indigo-50 text-black
                                     {% endif %}">{{
-                            item.pageNumber }}</a>
-                        <!-- </button>
-                        </form> -->
+                                    item.pageNumber }}</a>
+                            </button>
+                        </form>
                         {% endfor %}
                         <a href="#"
                             class="relative inline-flex items-center rounded-r-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20">
