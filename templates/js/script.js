@@ -20,12 +20,12 @@
 // });
 
 // log('loaded')
-console.log('loaded');
-const paginationLinks = document.querySelectorAll('.pagination-button');
+// console.log('loaded');
+// const paginationLinks = document.querySelectorAll('.pagination-button');
 
-paginationLinks.forEach(link => {
-    link.addEventListener('click', e => {
-        e.preventDefault();
-        console.log('selected clicked');
-    });
-});
+// paginationLinks.forEach(link => {
+//     link.addEventListener('click', e => {
+//         e.preventDefault();
+//         console.log('selected clicked');
+//     });
+// });
