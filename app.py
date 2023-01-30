@@ -79,6 +79,8 @@ def scrape():
     try:
         job_listings = flexjobs_scraper(url)[0]
         paginationItems = flexjobs_scraper(url)[1]
+        print(job_listings)
+        print(paginationItems)
     except:
         print(len(job_listings))
 
