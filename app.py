@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request
 import bs4
 import requests
-import json
 
 app = Flask(__name__)
 
