@@ -12,7 +12,9 @@
 <body class="bg-gray-50  ">
     <div class="container flex flex-col h-screen justify-between mx-auto ">
         <nav class="flex items-center mb-4 mt-4 shadow-sm justify-between flex-wrap bg-white p-6">
+            <!-- <form method="POST" action="{{ url_for('/') }}"> -->
             <div class="text-2xl font-bold text-indigo-000">JobMiner</div>
+            <!-- </form> -->
             <form method="POST" action="{{ url_for('scrape') }}" class="flex items-center">
                 <input name="jobtitle" type="text"
                     class="form-input py-2 px-2 rounded-md transition duration-150 ease-in-out bg-white border border-gray-300 placeholder-gray-500 rounded-md focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10 mr-3"
